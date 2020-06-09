@@ -1,0 +1,57 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'org.devzone'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+// without this configurations block it will fail on linux system:
+configurations {
+    providedRuntime
+    all*.exclude group: 'io.netty', module: 'netty-transport-native-epoll'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
+    //implementation('org.springframework.boot:spring-boot-starter-web')
+
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.3.0.RELEASE'
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    // testing
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+[test, build, bootRun].each { Task t ->
+    t.shouldRunAfter clean, assemble, ":docker:composeUp"
+    t.dependsOn ":docker:composeUp"
+    t.finalizedBy ":docker:composeDown"
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

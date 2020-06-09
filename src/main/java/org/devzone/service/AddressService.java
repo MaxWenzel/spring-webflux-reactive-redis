@@ -33,7 +33,7 @@ public class AddressService {
     }
 
     public Flux<Address> findAddressByPostalCode(String postalCode) {
-        logger.info("Try to find address for postalCode {}", postalCode);
+        logger.debug("Try to find address for postalCode {}", postalCode);
         return setOperations.members(postalCode);
     }
 

@@ -3,9 +3,6 @@ package org.devzone.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 @Data
 @Getter
 @Accessors(chain = true)

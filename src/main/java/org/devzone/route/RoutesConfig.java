@@ -15,7 +15,6 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @Configuration
 public class RoutesConfig {
 
-    // .contentType(MediaType.APPLICATION_JSON)
     @Bean
     public RouterFunction<ServerResponse> routes(AddressService addressService) {
         return

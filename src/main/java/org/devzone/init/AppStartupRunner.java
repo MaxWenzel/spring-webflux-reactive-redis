@@ -4,13 +4,11 @@ import org.devzone.model.Address;
 import org.devzone.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedReader;
@@ -32,7 +30,6 @@ public class AppStartupRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Resource resource = resourceLoader.getResource("classpath:postalcode_locality_de.csv");
-        resource.getInputStream();
 
         try ( BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream())) ) {
             List<String> addresses = reader.lines().collect(Collectors.toList());
